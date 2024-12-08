@@ -1,5 +1,4 @@
-#ifndef COLLISIONMANAGER_H
-#define COLLISIONMANAGER_H
+#pragma once
 
 #include <mutex>
 #include <condition_variable>
@@ -18,10 +17,11 @@ private:
     std::mutex mtx;                                // Mutex to protect the critical section
     std::condition_variable cv;                    // Condition variable for collision end
     sem_t semaphore;                               // Semaphore to control access
-    std::map<Object*, bool> collisionStatus;       // Track collision status for objects
     std::map<Object*, std::condition_variable> collisionCVs;  // Condition variables per object
 
 public:
+    std::map<Object*, bool> collisionStatus;       // Track collision status for objects
+
     // Constructor
     CollisionManager();
 
@@ -36,6 +36,3 @@ public:
     void waitForEndCollision(Object* object);
     void endCollision(Object* object);
 };
-
-#endif
-

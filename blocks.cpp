@@ -4,13 +4,13 @@
 using namespace std;
 
 // Constructor for Blocks
-Blocks::Blocks(int totalWidth, int numBlocks, int numberOfRows, Ball& ball)
-    : totalWidth(totalWidth), numBlocks(numBlocks), numberOfRows(numberOfRows), ball(ball) {
+Blocks::Blocks(int totalWidth, int numBlocks, int numberOfRows, Ball& ball, CollisionManager* manager)
+    : totalWidth(totalWidth), numBlocks(numBlocks), numberOfRows(numberOfRows), ball(ball), manager(manager) {
     populateBlocks();
     std::vector<std::thread> threads;
     for (auto& block : blocks) {
-        block->addCollisionObject(ball);
-        threads.push_back(std::thread([&block]() { block->checkCollision(); }));
+        block.addCollisionObject(ball);
+        threads.push_back(std::thread([&block]() { block.checkCollision(); }));
     }
     // Join all threads
     for (auto& t : threads) {
@@ -37,13 +37,19 @@ void Blocks::populateBlocks() {
             };
 
             char symbol = '#';  // Symbol representing the block
-            auto block = std::make_shared<BlockObject>(center, blockWidth / 2 - 1, blockHeight / 2 - 1, symbol);
-            blocks.push_back(std::move(block));  // Move the shared_ptr into the vector
+            BlockObject block(center, blockWidth / 2-1, blockHeight / 2-1, symbol, manager);
+            blocks.push_back(block);
         }
     }
 }
 
 // Get the list of blocks
-vector<std::shared_ptr<BlockObject>> Blocks::getBlocks() {
-    return blocks;
+vector<BlockObject*> Blocks::getBlocks() {
+    std::vector<BlockObject*> blockPtrs;
+
+    for (auto& block : blocks) {
+        blockPtrs.push_back(&block); // Add pointer to the vector
+    }
+
+    return blockPtrs;
 }

@@ -4,6 +4,7 @@
 #include "blocks.h"
 #include "ball.h"
 #include "bar.h"
+#include "manager.h"
 #include <iostream>
 #include <thread>
 
@@ -24,24 +25,24 @@ void my_thread() {
     Draw draw(rows, cols);
     //draw.setObjects({ball});
 
+    CollisionManager manager;
 
-    std::shared_ptr<Ball> ballPtr = std::make_shared<Ball>(Ball({(float) cols/2, (float) rows/2}, 1, 1, {-1, -1}));
-    Ball ball({(float) cols/2, (float) rows/2}, 1, 1, {-1, -1});
-    draw.addObject(ballPtr);
+    Ball ball({(float) cols/2, (float) rows/2}, 1, 1, {-1, -1}, &manager);
+    draw.addObject(ball);
     //checkCollision
     thread([&ball]() { ball.checkCollision(); }).detach();
 
-    Blocks blocks(cols, 10, rows/5, ball);
+    Blocks blocks(cols, 10, rows/5, ball, &manager);
 
     Bar bar(cols, rows, '-');
     ball.addCollisionObject(bar);
     //draw.addObject(std::move(bar));
 
-    CollisionObject top({(float) cols/2, 0}, cols/2, 1, '-');
-    CollisionObject bottom({(float) cols/2, (float) rows}, cols/2, 1, '-');
-    CollisionObject left({-1, (float) rows/2}, 1, rows/2, '|');
-    CollisionObject right({(float) cols, (float) rows/2}, 1, rows/2, '|');
-    //draw.addObject(std::move(top));
+    CollisionObject top({(float) cols/2, 0}, cols/2, 1, '-', &manager);
+    CollisionObject bottom({(float) cols/2, (float) rows}, cols/2, 1, '-', &manager);
+    CollisionObject left({-1, (float) rows/2}, 1, rows/2, '|', &manager);
+    CollisionObject right({(float) cols, (float) rows/2}, 1, rows/2, '|', &manager);
+    draw.addObject(top);
     top.setDraw(true); ball.addCollisionObject(top);
     bottom.setDraw(false); ball.addCollisionObject(bottom);
     left.setDraw(false); ball.addCollisionObject(left);

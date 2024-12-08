@@ -49,43 +49,34 @@ public:
     }
 };
 
+#include <vector>
+#include <map>
+#include <array>
+#include <string>
+#include "manager.h"
+
 class CollisionObject : public Object {
 private:
-    vector<Object*> collisionObjects;
+    std::vector<Object*> collisionObjects;
     bool collisionActive;
-    std::map<Object*, bool> collisionStatus;
-    std::mutex mtx;                  // Mutex to protect the critical section
-    std::condition_variable cv;      // Condition variable to wait for collision to end
-    sem_t semaphore;
-    std::map<Object*, std::condition_variable> collisionCVs;  // CVs for each object
+    CollisionManager* collisionManager;  // CollisionManager instance
 
 public:
     // Constructor
-    CollisionObject(array<float, 2> center, int hwidth, int hheight, char symbol);
+    CollisionObject(std::array<float, 2> center, int hwidth, int hheight, char symbol, CollisionManager* manager);
     ~CollisionObject();
-
-    CollisionObject() = default;
-    // Delete copy and move constructors/assignments for CollisionObject
-    CollisionObject(const CollisionObject&) = delete;
-    CollisionObject& operator=(const CollisionObject&) = delete;
-    CollisionObject(CollisionObject&&) = delete;
-    CollisionObject& operator=(CollisionObject&&) = delete;
 
     // Methods for managing collision objects
     void addCollisionObject(Object& object);
     void removeCollisionObject(Object& object);
-    vector<Object*> getCollisionObjects();
-    
+    std::vector<Object*> getCollisionObjects();
+
     // Collision detection
     virtual void onCollision(Object& object);
     void checkCollision();
-
     void onClockTick() override {};
 
     // Collision management
     bool isCollisionActive();
     void setCollisionActive(bool active);
-
-    void endCollision(Object* object);
-    void waitForEndCollision(Object* object);
 };

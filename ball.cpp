@@ -3,8 +3,8 @@
 #include <iostream>
 
 // Constructor for Ball, inherits from CollisionObject
-Ball::Ball(std::array<float, 2> center, int hwidth, int hheight, std::array<float, 2> direction)
-    : CollisionObject(center, hwidth, hheight, 'O') {
+Ball::Ball(std::array<float, 2> center, int hwidth, int hheight, std::array<float, 2> direction, CollisionManager* manager)
+    : CollisionObject(center, hwidth, hheight, 'O', manager) {
     this->direction = direction;
     normalizeDirection(); // Ensure the direction vector is normalized
 }

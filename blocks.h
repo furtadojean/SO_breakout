@@ -1,12 +1,13 @@
 #pragma once
 #include "object.h"  // Include the Object and CollisionObject classes
 #include "ball.h"
+#include "manager.h"
 
 class BlockObject : public CollisionObject {
 public:
     // Constructor for BlockObject, initializing as a CollisionObject
-    BlockObject(array<float, 2> center, int hwidth, int hheight, char symbol)
-        : CollisionObject(center, hwidth, hheight, symbol) {setCollisionActive(true);}
+    BlockObject(array<float, 2> center, int hwidth, int hheight, char symbol, CollisionManager* manager)
+        : CollisionObject(center, hwidth, hheight, symbol, manager) {setCollisionActive(true);}
 
     // Override the onCollision method to disable collision when a collision occurs
     void onCollision(Object& object) override {
@@ -18,18 +19,19 @@ public:
 
 class Blocks {
 private:
-    std::vector<std::shared_ptr<BlockObject>> blocks;  // List of BlockObject instances
+    std::vector<BlockObject> blocks;  // List of BlockObject instances
     int totalWidth;  // Total width of the block section
     int numBlocks;   // Number of blocks per row
     int numberOfRows; // Number of rows of blocks
     Ball& ball;
+    CollisionManager* manager;
 
 public:
     // Constructor for Blocks class
-    Blocks(int totalWidth, int numBlocks, int numberOfRows, Ball& ball);
+    Blocks(int totalWidth, int numBlocks, int numberOfRows, Ball& ball, CollisionManager* manager);
 
     // Method to get the list of blocks
-    std::vector<std::shared_ptr<BlockObject>> getBlocks();
+    std::vector<BlockObject*> getBlocks();
 
     // Method to populate blocks based on total size and number of blocks
     void populateBlocks();
