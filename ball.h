@@ -18,4 +18,6 @@ public:
 
     // Override the onCollision function to update the direction vector
     void onCollision(Object& object) override;
+
+    void reflect(const std::array<float, 2>& normal);
 };

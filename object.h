@@ -41,7 +41,7 @@ public:
     void setDraw(bool draw);
 
     virtual void onClockTick() {
-        cout << "Base class" << endl;
+        //cout << "Base class" << endl;
     };
 
     bool operator ==(const Object& other) const {
@@ -79,4 +79,6 @@ public:
     // Collision management
     bool isCollisionActive();
     void setCollisionActive(bool active);
+
+    CollisionManager* getCollisionManager();
 };

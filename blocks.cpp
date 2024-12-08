@@ -4,8 +4,8 @@
 using namespace std;
 
 // Constructor for Blocks
-Blocks::Blocks(int totalWidth, int numBlocks, int numberOfRows, Ball& ball, CollisionManager* manager)
-    : totalWidth(totalWidth), numBlocks(numBlocks), numberOfRows(numberOfRows), ball(ball), manager(manager) {
+Blocks::Blocks(int totalWidth, int totalHeight, int blocksPerRow, int numberOfRows, Ball& ball, CollisionManager* manager)
+    : totalWidth(totalWidth), totalHeight(totalHeight), blocksPerRow(blocksPerRow), numberOfRows(numberOfRows), ball(ball), manager(manager) {
     populateBlocks();
     std::vector<std::thread> threads;
     for (auto& block : blocks) {
@@ -24,12 +24,12 @@ void Blocks::populateBlocks() {
     blocks.clear();
 
     // Calculate the width for each block based on the total size
-    int blockWidth = totalWidth / numBlocks;
-    int blockHeight = blockWidth / 2;  // Height is half the width of the block
+    int blockWidth = totalWidth / blocksPerRow;
+    int blockHeight = totalHeight / 3 / numberOfRows;
 
     // Calculate block positions and create BlockObject instances
     for (int row = 0; row < numberOfRows; ++row) {
-        for (int col = 0; col < numBlocks; ++col) {
+        for (int col = 0; col < blocksPerRow; ++col) {
             // Calculate the center of each block
             array<float, 2> center = {
                 static_cast<float>(blockWidth * col + blockWidth / 2.0),

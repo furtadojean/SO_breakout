@@ -21,14 +21,15 @@ class Blocks {
 private:
     std::vector<BlockObject> blocks;  // List of BlockObject instances
     int totalWidth;  // Total width of the block section
-    int numBlocks;   // Number of blocks per row
+    int totalHeight;  // Total width of the block section
+    int blocksPerRow;   // Number of blocks per row
     int numberOfRows; // Number of rows of blocks
     Ball& ball;
     CollisionManager* manager;
 
 public:
     // Constructor for Blocks class
-    Blocks(int totalWidth, int numBlocks, int numberOfRows, Ball& ball, CollisionManager* manager);
+    Blocks(int totalWidth, int totalHeight, int blocksPerRow, int numberOfRows, Ball& ball, CollisionManager* manager);
 
     // Method to get the list of blocks
     std::vector<BlockObject*> getBlocks();

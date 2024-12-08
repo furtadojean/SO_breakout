@@ -13,7 +13,8 @@ Draw::Draw(int rows, int cols) : rows(rows), cols(cols) {}
 // Helper function to clear the screen by printing newlines
 void Draw::clear() {
     // Print enough newlines to clear the screen
-    std::cout << std::string(50, '\n');
+    std::cout << "\033[2J\033[H";  // ANSI escape code to clear screen and reset cursor position
+
 }
 
 // Function to update the pixelMap based on the objects' positions
@@ -49,7 +50,7 @@ void Draw::update() {
 // Function to draw the screen based on the pixelMap
 void Draw::draw() {
     // Clear the previous screen
-    //clear();
+    clear();
 
     std::cout << std::string(cols, '-') << std::endl;
     // Now draw the screen by iterating through each pixel

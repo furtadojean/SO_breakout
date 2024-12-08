@@ -107,7 +107,7 @@ void CollisionObject::checkCollision() {
             }
         }
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }
 
@@ -117,6 +117,10 @@ bool CollisionObject::isCollisionActive() {
 
 void CollisionObject::setCollisionActive(bool active) {
     collisionActive = active;
+}
+
+CollisionManager* CollisionObject::getCollisionManager() {
+    return collisionManager;
 }
 
 // Implement the getter and setter for hasPhysics
