@@ -52,21 +52,31 @@ void Draw::draw() {
     // Clear the previous screen
     clear();
 
-    std::cout << std::string(cols, '-') << std::endl;
+    std::cout << std::string((cols+2)/2-3, ' ') << "Score: " << score << std::endl;
+    std::cout << std::string(cols+2, '-') << std::endl;
     // Now draw the screen by iterating through each pixel
     for (int y = 0; y < rows; ++y) {
+        std::cout << '|';
         for (int x = 0; x < cols; ++x) {
             // Check if a position is occupied by an object
             auto it = pixelMap.find({x, y});
             if (it != pixelMap.end()) {
                 // If occupied, print the object's character
+                if (it->second == nullptr) {
+                    std::cout << ' ';
+                    continue;
+                }
                 std::cout << it->second->getSymbol();
             } else {
                 // If not occupied, print a whitespace
                 std::cout << ' ';
             }
         }
-        std::cout << std::endl;
+        std::cout << '|' << std::endl;
     }
-    std::cout << std::string(cols, '-') << std::endl;
+    std::cout << std::string(cols+2, '-') << std::endl;
+}
+
+void Draw::increaseScore() {
+    this->score++;
 }

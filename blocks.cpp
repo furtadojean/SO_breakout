@@ -4,10 +4,9 @@
 using namespace std;
 
 // Constructor for Blocks
-Blocks::Blocks(int totalWidth, int totalHeight, int blocksPerRow, int numberOfRows, Ball& ball, CollisionManager* manager)
-    : totalWidth(totalWidth), totalHeight(totalHeight), blocksPerRow(blocksPerRow), numberOfRows(numberOfRows), ball(ball), manager(manager) {
+Blocks::Blocks(int totalWidth, int totalHeight, int blocksPerRow, int numberOfRows, Ball& ball, CollisionManager* manager, Draw* draw)
+    : totalWidth(totalWidth), totalHeight(totalHeight), blocksPerRow(blocksPerRow), numberOfRows(numberOfRows), ball(ball), manager(manager), draw(draw) {
     populateBlocks();
-    std::vector<std::thread> threads;
     for (auto& block : blocks) {
         block.addCollisionObject(ball);
         threads.push_back(std::thread([&block]() { block.checkCollision(); }));
@@ -37,7 +36,7 @@ void Blocks::populateBlocks() {
             };
 
             char symbol = '#';  // Symbol representing the block
-            BlockObject block(center, blockWidth / 2-1, blockHeight / 2-1, symbol, manager);
+            BlockObject block(center, blockWidth / 2-1, blockHeight / 2-1, symbol, manager, draw);
             blocks.push_back(block);
         }
     }

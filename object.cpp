@@ -96,12 +96,13 @@ void CollisionObject::checkCollision() {
 
             bool wasColliding = collisionManager->collisionStatus[object];
 
-            if (isColliding && !wasColliding) {
+            if (collisionActive && isColliding && !wasColliding) {
                 collisionManager->collisionStatus[object] = true;
                 std::thread([this, &object]() {
                     onCollision(dynamic_cast<Object&>(*object));
                 }).detach();
-            } else if (!isColliding && wasColliding) {
+            }
+            if (!isColliding && wasColliding) {
                 collisionManager->collisionStatus[object] = false;
                 collisionManager->endCollision(object);
             }

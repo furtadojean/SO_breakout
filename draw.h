@@ -8,6 +8,7 @@ private:
     int rows, cols;  // Screen size in characters (rows x cols)
     std::vector<Object*> objects;  // List of objects to draw
     std::map<std::pair<int, int>, Object*> pixelMap;  // Map to track which object occupies each pixel
+    int score = 0;
 
 public:
     // Constructor that initializes the screen size
@@ -49,4 +50,7 @@ public:
 
     // Helper function to clear the screen (for clean drawing)
     void clear();
+
+    // Function to update the score
+    void increaseScore();
 };

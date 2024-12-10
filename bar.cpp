@@ -23,6 +23,10 @@ void Bar::calculateDimensions(int totalWidth, int totalHeight) {
 // Method to move the bar horizontally by an x amount
 void Bar::moveHorizontally(int x) {
     array<float, 2> currentCenter = getCenter();
+    int totalWidth = getHWidth() * 5;
+    if (currentCenter[0] + x - getHWidth() < 0 || currentCenter[0] + x + getHWidth() > totalWidth) {
+        return;  // Do not move if the bar is at the edge
+    }
     currentCenter[0] += x;  // Move the center horizontally by x amount
     setCenter(currentCenter);  // Update the center of the Bar
 }

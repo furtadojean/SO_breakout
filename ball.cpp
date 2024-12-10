@@ -3,8 +3,8 @@
 #include <iostream>
 
 // Constructor for Ball, inherits from CollisionObject
-Ball::Ball(std::array<float, 2> center, int hwidth, int hheight, std::array<float, 2> direction, CollisionManager* manager)
-    : CollisionObject(center, hwidth, hheight, 'O', manager) {
+Ball::Ball(std::array<float, 2> center, int hwidth, int hheight, std::array<float, 2> direction, CollisionManager* manager, std::array<int, 2> max)
+    : CollisionObject(center, hwidth, hheight, 'O', manager), max(max) {
     this->direction = direction;
     normalizeDirection(); // Ensure the direction vector is normalized
 }
@@ -26,6 +26,35 @@ void Ball::onClockTick() {
     setCenter(center);
     //cout << "Ball center: " << getCenter()[0] << ", " << getCenter()[1] << endl;
     //cout << "Ball direction: " << direction[0] << ", " << direction[1] << endl;
+}
+
+void Ball::fixEdgeCase() {
+    getCollisionManager()->acquireSemaphore();  // Protect critical section with semaphore
+    std::array<float, 2> center = getCenter();
+    // Edge case: ball is at one of the 4 corners
+    if (center[0] < 0 && center[1] < 0) {
+        center[0] = 0;
+        center[1] = 0;
+        direction[0] = 1;
+        direction[1] = 1;
+    } else if (center[0] < 0 && center[1] > max[1]) {
+        center[0] = 0;
+        center[1] = max[1];
+        direction[0] = 1;
+        direction[1] = -1;
+    } else if (center[0] > max[0] && center[1] < 0) {
+        center[0] = max[0];
+        center[1] = 0;
+        direction[0] = -1;
+        direction[1] = 1;
+    } else if (center[0] > max[0] && center[1] > max[1]) {
+        center[0] = max[0];
+        center[1] = max[1];
+        direction[0] = -1;
+        direction[1] = -1;
+    }
+    setCenter(center);
+    getCollisionManager()->releaseSemaphore();  // Protect critical section with semaphore
 }
 
 // Reflect the direction vector across a given normal
