@@ -5,6 +5,7 @@
 #include "ball.h"
 #include "bar.h"
 #include "manager.h"
+#include "running.h"
 #include <iostream>
 #include <thread>
 
@@ -80,6 +81,9 @@ int main() {
     // Clock tick thread: call onClockTick and update the drawing
     thread updateThread([&ball, &draw, &tickTime]() {
         while (true) {
+            if (Running::getInstance().shouldStop()) {
+                return;
+            }
             ball.onClockTick();
             draw.update();
             this_thread::sleep_for(chrono::milliseconds((int) tickTime));
@@ -92,6 +96,9 @@ int main() {
     // Drawing thread: draw the updated screen
     thread drawThread([&draw, &framerate]() {
         while (true) {
+            if (Running::getInstance().shouldStop()) {
+                return;
+            }
             draw.draw();
             this_thread::sleep_for(chrono::milliseconds(1000/framerate));
         }
@@ -102,8 +109,8 @@ int main() {
         cout << "Ball center: " << ball.getCenter()[0] << ", " << ball.getCenter()[1] << endl;
         // If ball goes past the floor
         if (ball.getCenter()[1] > rows) {
+            Running::getInstance().stopThreads();
             cout << "Game over!" << endl;
-            exit(0);
             inputHandler.stopListening();
             updateThread.join();
             drawThread.join();
@@ -111,9 +118,7 @@ int main() {
             for (auto& t : blockThreads) {
                 if (t.joinable()) t.join();
             }
-            std::terminate();
+            exit(0);
         }
     }
-    exit(0);
-    std::terminate();
 }

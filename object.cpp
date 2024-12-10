@@ -2,6 +2,7 @@
 #include <iostream>
 #include <algorithm>
 #include <thread>
+#include "running.h"
 
 // Object class constructor
 Object::Object(array<float, 2> center, int hwidth, int hheight, char symbol) 
@@ -86,6 +87,9 @@ void CollisionObject::checkCollision() {
     }
 
     while (true) {
+        if (Running::getInstance().shouldStop()) {
+            break;
+        }
         for (auto& object : collisionObjects) {
             if (!object->getHasPhysics()) {
                 continue;

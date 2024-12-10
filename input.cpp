@@ -3,6 +3,7 @@
 #include <thread>
 #include <map>
 #include <atomic>
+#include "running.h"
 
 #ifdef _WIN32
 #include <conio.h>  // Windows-specific header for _kbhit() and _getch()
@@ -24,6 +25,10 @@ Input::~Input() {
 // Function to listen for key presses
 void Input::listenForKeys() {
     while (isRunning) {
+        if (Running::getInstance().shouldStop()) {
+            isRunning = false;
+            return;
+        }
         char key = getKey();  // Get a key (non-blocking)
 
         if (key != '\0') {  // If a key is pressed
