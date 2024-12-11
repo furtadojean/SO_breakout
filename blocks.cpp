@@ -29,11 +29,6 @@ Blocks::Blocks(int totalWidth, int totalHeight, int blocksPerRow, int numberOfRo
         block.addCollisionObject(ball);
         threads.push_back(std::thread([&block]() { block.checkCollision(); }));
     }
-    // Join all threads
-    for (auto& t : threads) {
-        if (t.joinable())
-            t.detach();
-    }
 }
 
 // Populate blocks based on total size and number of blocks

@@ -11,7 +11,6 @@ class Object; // Forward declaration of Object class
 class CollisionManager {
 private:
     std::mutex mtx;                                // Mutex to protect the critical section
-    std::condition_variable cv;                    // Condition variable for collision end
     sem_t semaphore;                               // Semaphore to control access
     std::map<Object*, std::condition_variable> collisionCVs;  // Condition variables per object
 
