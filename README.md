@@ -1,6 +1,6 @@
 # Rodar (Linux)
-- Compilar: "make test"
-- Rodar: "./test"
+- Compilar: "make build"
+- Rodar: "./breakout"
 # Comandos
 - "a" e "d" pra mexer a barra
 - "q" pra sair
