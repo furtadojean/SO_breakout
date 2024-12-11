@@ -104,7 +104,6 @@ void CollisionObject::checkCollision() {
                 }).detach();
             }
             if (!isColliding && wasColliding) {
-                collisionManager->collisionStatus[object] = false;
                 collisionManager->endCollision(object);
             }
         }

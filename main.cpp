@@ -76,7 +76,7 @@ int main() {
             this_thread::sleep_for(chrono::milliseconds((int) tickTime));
             // Increases speed gradually
             if (tickTime > 10) {
-                tickTime *= 0.999;
+                tickTime *= 0.995;
             }
         }
     });
