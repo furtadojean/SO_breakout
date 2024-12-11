@@ -1,9 +1,6 @@
 #include "input.h"
-#include <iostream>
-#include <thread>
-#include <map>
-#include <atomic>
 #include "running.h"
+#include <iostream>
 
 #ifdef _WIN32
 #include <conio.h>  // Windows-specific header for _kbhit() and _getch()

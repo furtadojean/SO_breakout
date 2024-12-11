@@ -4,14 +4,6 @@
 #include <map>
 #include <thread>
 #include <atomic>
-#include <iostream>
-
-#ifdef _WIN32
-#include <conio.h> // For Windows
-#else
-#include <unistd.h>
-#include <termios.h>
-#endif
 
 class Input {
 public:

@@ -4,17 +4,11 @@
 // Constructor for the Draw class
 Draw::Draw(int rows, int cols) : rows(rows), cols(cols) {}
 
-// Method to set the list of objects to be drawn
-//template<typename T, std::enable_if_t<std::is_base_of_v<Object, T>, bool>>
-//void Draw::setObjects(const std::vector<T>& objects) {
-//    this->objects = objects;
-//}
 
 // Helper function to clear the screen by printing newlines
 void Draw::clear() {
-    // Print enough newlines to clear the screen
-    std::cout << "\033[2J\033[H";  // ANSI escape code to clear screen and reset cursor position
-
+    // ANSI escape code to clear screen and reset cursor position
+    std::cout << "\033[2J\033[H";
 }
 
 // Function to update the pixelMap based on the objects' positions
@@ -30,7 +24,6 @@ void Draw::update() {
         }
         int centerX = obj->getCenter()[0];
         int centerY = obj->getCenter()[1];
-        //cout << "CenterX: " << centerX << endl;
         int halfWidth = obj->getHWidth();
         int halfHeight = obj->getHHeight();
 
@@ -79,4 +72,8 @@ void Draw::draw() {
 
 void Draw::increaseScore() {
     this->score++;
+}
+
+int Draw::getScore() {
+    return this->score;
 }

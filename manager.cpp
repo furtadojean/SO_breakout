@@ -1,8 +1,5 @@
 #include "manager.h"
 #include <semaphore.h>
-#include <iostream>
-#include <chrono>
-#include <thread>
 
 CollisionManager::CollisionManager() {
     if (sem_init(&semaphore, 0, 1) != 0) {

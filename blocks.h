@@ -13,24 +13,7 @@ public:
         : CollisionObject(center, hwidth, hheight, symbol, manager), draw(draw) {setCollisionActive(true);}
 
     // Override the onCollision method to disable collision when a collision occurs
-    void onCollision(Object& object) override {
-        // Handle the collision logic here
-        getCollisionManager()->acquireSemaphore();  // Protect critical section with semaphore
-        if(!getDraw()) {
-            getCollisionManager()->releaseSemaphore();
-            return;
-        }
-        setCollisionActive(false);
-        setDraw(false);
-        draw->increaseScore();
-        std::cout << "Collision detected!" << std::endl;
-
-        // Wait for collision to end
-        getCollisionManager()->waitForEndCollision(&object);
-
-        // End collision, allowing other threads to proceed
-        getCollisionManager()->releaseSemaphore();
-    }
+    void onCollision(Object& object) override;
     void onClockTick() override {};
 };
 

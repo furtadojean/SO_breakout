@@ -10,10 +10,6 @@
 #include <thread>
 using namespace std;
 
-// TODO: an object should have an offset function so it can
-// keep the same global position, but have a local position that will be
-// used when checking collision and drawing on screen
-
 class Object {
 private:
     array<float, 2> center;
@@ -40,9 +36,7 @@ public:
     void setHasPhysics(bool hasPhysics);
     void setDraw(bool draw);
 
-    virtual void onClockTick() {
-        //cout << "Base class" << endl;
-    };
+    virtual void onClockTick() {};
 
     bool operator ==(const Object& other) const {
         return this == &other;

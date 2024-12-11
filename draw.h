@@ -53,4 +53,7 @@ public:
 
     // Function to update the score
     void increaseScore();
+
+    // Function to get the score
+    int getScore();
 };

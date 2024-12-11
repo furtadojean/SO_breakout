@@ -3,6 +3,24 @@
 
 using namespace std;
 
+void BlockObject::onCollision(Object& object) {
+    // Handle the collision logic here
+    getCollisionManager()->acquireSemaphore();  // Protect critical section with semaphore
+    if(!getDraw()) {
+        getCollisionManager()->releaseSemaphore();
+        return;
+    }
+    setCollisionActive(false);
+    setDraw(false);
+    draw->increaseScore();
+
+    // Wait for collision to end
+    getCollisionManager()->waitForEndCollision(&object);
+
+    // End collision, allowing other threads to proceed
+    getCollisionManager()->releaseSemaphore();
+}
+
 // Constructor for Blocks
 Blocks::Blocks(int totalWidth, int totalHeight, int blocksPerRow, int numberOfRows, Ball& ball, CollisionManager* manager, Draw* draw)
     : totalWidth(totalWidth), totalHeight(totalHeight), blocksPerRow(blocksPerRow), numberOfRows(numberOfRows), ball(ball), manager(manager), draw(draw) {

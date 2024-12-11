@@ -1,8 +1,7 @@
 #include "object.h"
-#include <iostream>
+#include "running.h"
 #include <algorithm>
 #include <thread>
-#include "running.h"
 
 // Object class constructor
 Object::Object(array<float, 2> center, int hwidth, int hheight, char symbol) 
@@ -71,8 +70,6 @@ std::vector<Object*> CollisionObject::getCollisionObjects() {
 void CollisionObject::onCollision(Object& object) {
     // Handle the collision logic here
     collisionManager->acquireSemaphore();  // Protect critical section with semaphore
-
-    std::cout << "Collision detected!" << std::endl;
 
     // Wait for collision to end
     collisionManager->waitForEndCollision(&object);

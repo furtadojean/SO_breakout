@@ -1,6 +1,5 @@
 #include "ball.h"
 #include <cmath> // For std::sqrt and std::pow
-#include <iostream>
 
 // Constructor for Ball, inherits from CollisionObject
 Ball::Ball(std::array<float, 2> center, int hwidth, int hheight, std::array<float, 2> direction, CollisionManager* manager, std::array<int, 2> max)
@@ -24,37 +23,6 @@ void Ball::onClockTick() {
     center[0] += direction[0];
     center[1] += direction[1];
     setCenter(center);
-    //cout << "Ball center: " << getCenter()[0] << ", " << getCenter()[1] << endl;
-    //cout << "Ball direction: " << direction[0] << ", " << direction[1] << endl;
-}
-
-void Ball::fixEdgeCase() {
-    getCollisionManager()->acquireSemaphore();  // Protect critical section with semaphore
-    std::array<float, 2> center = getCenter();
-    // Edge case: ball is at one of the 4 corners
-    if (center[0] < 0 && center[1] < 0) {
-        center[0] = 0;
-        center[1] = 0;
-        direction[0] = 1;
-        direction[1] = 1;
-    } else if (center[0] < 0 && center[1] > max[1]) {
-        center[0] = 0;
-        center[1] = max[1];
-        direction[0] = 1;
-        direction[1] = -1;
-    } else if (center[0] > max[0] && center[1] < 0) {
-        center[0] = max[0];
-        center[1] = 0;
-        direction[0] = -1;
-        direction[1] = 1;
-    } else if (center[0] > max[0] && center[1] > max[1]) {
-        center[0] = max[0];
-        center[1] = max[1];
-        direction[0] = -1;
-        direction[1] = -1;
-    }
-    setCenter(center);
-    getCollisionManager()->releaseSemaphore();  // Protect critical section with semaphore
 }
 
 // Reflect the direction vector across a given normal
@@ -68,24 +36,6 @@ void Ball::reflect(const std::array<float, 2>& normal) {
 void Ball::onCollision(Object& object) {
     // Handle the collision logic here
     getCollisionManager()->acquireSemaphore();  // Protect critical section with semaphore
-
-    //std::cout << "Collision detected!" << std::endl;
-    // Get the difference between the centers
-    //std::array<float, 2> otherCenter = object.getCenter();
-    //float dx = -otherCenter[0] + getCenter()[0];
-    //float dy = -otherCenter[1] + getCenter()[1];
-
-    //// Normalize the difference vector (direction towards the other object)
-    //double norm = std::sqrt(std::pow(dx, 2) + std::pow(dy, 2));
-    //if (norm != 0) {
-    //    dx /= norm/0.6;
-    //    dy /= norm/0.8;
-    //}
-
-    //// Update the direction vector: add the difference to the current direction
-    //float invert = -1.0 + (rand() % 2) * 2;
-    //direction[0] = dx * invert;
-    //direction[1] = dy;
 
     // Get the object's center and half-dimensions
     auto [objectCenterX, objectCenterY] = object.getCenter();
@@ -119,7 +69,4 @@ void Ball::onCollision(Object& object) {
 
     // End collision, allowing other threads to proceed
     getCollisionManager()->releaseSemaphore();
-
-    // Call the base class's onCollision function (optional)
-    //CollisionObject::onCollision(object);
 }

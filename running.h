@@ -1,3 +1,5 @@
+#pragma once
+
 #include <atomic>
 
 class Running {
@@ -9,18 +11,14 @@ public:
     }
 
     // Set the flag to stop threads
-    void stopThreads() {
-        stopFlag.store(true);
-    }
+    void stopThreads();
 
     // Check if threads should stop
-    bool shouldStop() const {
-        return stopFlag.load();
-    }
+    bool shouldStop() const;
 
 private:
     // Constructor is private to enforce singleton
-    Running() : stopFlag(false) {}
+    Running();
 
     // Delete copy constructor and assignment operator to avoid multiple instances
     Running(const Running&) = delete;
